@@ -1,10 +1,24 @@
 app.login = function(ctl, $scope, $location, $firebaseObject, $firebaseArray){
   app.check_login = function(){
     ctl.user = firebase.auth().currentUser;
-    app.user = ctl.user;
+    //app.user = ctl.user;
     console.log("User", ctl.user);
     ctl.apply();
   };
+
+  //Function that check if i'm logged in and fire a function funct
+  //params, object that contain parameters
+  /*ctl.isLogged = function(funct,params){
+    if(ctl.user == null){
+      var interval = setInterval(function(){
+
+      });
+    }else{
+      funct();
+    }
+  }*/
+
+
   setTimeout(app.check_login, 250);
   setTimeout(app.check_login, 650);
   

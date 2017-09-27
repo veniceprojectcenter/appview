@@ -1,56 +1,25 @@
 angular.module('app').controller('MainCtrl',
  function(
-  $scope, $routeParams, $translate, $timeout, $location,
-  $mdSidenav,$firebaseObject, $firebaseArray, $firebaseAuth,
-  appSrv, widgetSrv
+  $scope, $routeParams, $translate, $http, $timeout, $location,
+  $mdSidenav,$firebaseObject, $firebaseArray, $firebaseAuth, NgMap
   ) {
-  console.log("QUI");
   var ctl = this;
-  /*inizializzazione helper*/
+  ctl.firebase = firebase;
+  //GROUP NAME OF THE DATASETS
+  //ctl = {};
+
+
+  /*helper initialization*/
   app.app_helper(ctl);
-
-  /*inizializzazione di firebase*/
+  /*function for applying external javascript in an angular envroiment */
   ctl.apply = function(){ setTimeout(function () { $scope.$apply(); }, 50); };
+  /* login functions */
   app.login(ctl, $scope, $location, $firebaseObject, $firebaseArray);
+  /*map initialization*/
+  app.init_map(ctl, $firebaseArray, NgMap);
 
-  var datasets = [0,-15,20,-10,35,5,55]
-  var labels = ["15/08/2017","16/08/2017","17/08/2017","18/08/2017","19/08/2017","20/08/2017","21/08/2017"];
-  app.chart_init(ctl,$scope,datasets,labels,"Previsione Maree");
+  //ctl.read_geojson("Bell Tower Page Final", $firebaseArray);
 
-  /*inizializzazione variabili e service (factory) */
-  ctl.widgets=[];
-
-  ctl.widgets.push({
-    title           : "Venice Tide", 
-    span            : {col : 2, row: 2},
-    fragment        : "/views/widget/venice_tide.html",
-    icon            : "reorder",
-    background      : "transparent",
-    text_color      : "black",
-    now_tide        : 40,
-    next_tide        : 110,
-    now_tide_color  : "green",
-    next_tide_color  : "blue",
-    next_tide_time  : "15:30",
-    previsione      : ctl.previsione
-  });
-    ctl.widgets.push({
-    title           : "Venice Tide", 
-    span            : {col : 2, row: 1},
-    fragment        : "/views/widget/venice_tide.html",
-    icon            : "reorder",
-    background      : "transparent",
-    text_color      : "black",
-    now_tide        : 40,
-    next_tide        : 110,
-    now_tide_color  : "green",
-    next_tide_color  : "blue",
-    next_tide_time  : "15:30",
-    previsione      : ctl.previsione
-  });
-
-  ctl.appSrv = appSrv;
-  ctl.widgetSrv = widgetSrv;
   /*functions per il sidenav */
   $scope.toggleLeft = buildToggler('left');
   $scope.toggleRight = buildToggler('right');
@@ -60,28 +29,8 @@ angular.module('app').controller('MainCtrl',
       $mdSidenav(componentId).toggle();
     };
   }
-
-  ctl.welcomeLoad = function(){
-    alert('OK');
-  };
-  ctl.elementLoad = function(){
-    ctl.spinnerShow();
-
-    console.log("Visualizzo singolo elemento", $routeParams);
-    // ctl.current_element_id = $routeParams.item_id;
-    // ctl.current_element = ctl.appSrv.list[ctl.current_element_id];
-
-    $timeout(function(){
-    // setTimeout(function(){
-    //   // console.log("Visualizzo singolo elemento", $routeParams);
-      ctl.current_element_id = $routeParams.item_id;
-      ctl.current_element = ctl.appSrv.list[ctl.current_element_id];
-      // $scope.$apply();
-    //   // -> https://docs.angularjs.org/api/ng/service/$timeout
-    //
-      ctl.spinnerHide();
-    }, 1500);
-  }
-
-  ctl.spinnerHide();
+  
+  //ctl.read_geojson(ctl.GROUP_NAMES, ctl.firebase);
+  ctl.import_members(ctl.GROUP_NAMES);
+  //app.import_markers(ctl.GROUP_NAMES);
 });

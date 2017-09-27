@@ -1,0 +1,46 @@
+<div style="height: 100%; width: 100%; position: unset;">
+	<ng-map
+	  id="map"
+	  street-view-control="false"
+	  style="height: 100%"
+	  center="[45.438109, 12.327966]"
+	  zoom="{{ctl.zoom_level}}"
+	  >
+	  <custom-marker position="[{{m.birth_certificate.lat}}, {{m.birth_certificate.lon}}]" ng-repeat="m in ctl.markers" on-click="ctl.showModal('.modal', m)">
+    <div id="{{m.birth_certificate.g}}" class="custom-marker"></div>
+    </custom-marker>
+	</ng-map>
+</div>
+
+<div class="modal" style="display: none;">
+<div class="close" style="float: right;" ng-click="ctl.hideModal('.modal')">X</div>
+CKID: <br/>
+ {{ctl.modal.ckid}} <br/>
+POS: <br/>
+ {{ctl.modal.pos}}  <br/>
+</div>
+
+
+<style type="text/css">
+	.modal{
+		position: absolute;
+		background-color: white;
+		width: 100%;
+		height: 452px;
+		top: calc( 50% - 200px );
+	}
+	.info-window{
+		background-color: rgba(255,255,255,0.5);
+		font-size: 15px;
+		font-weight: bold;
+	}
+	.custom-marker{
+		height: 8px;
+		width: 8px;
+		background-color: blue;
+		border-color: black;
+		border-width: 1px;
+		border-radius: 50%;
+	}
+	
+</style>
